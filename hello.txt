@@ -295,3 +295,32 @@ git branch -M main
 
 git remote add origin https://github.com/<username>/demoapp-lab-practice.git
 git push -u origin main
+
+
+
+
+services:
+  web:
+    image: tomcat:9.0
+    container_name: my-tomcat-app
+    ports:
+      - "8081:8080"   # Host 8081 mapped to Tomcat's default 8080
+    volumes:
+      - ./target/yourapp.war:/usr/local/tomcat/webapps/ROOT.war
+    depends_on:
+      - db
+    environment:
+      # If your app needs DB env vars, add here
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: demo
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
